@@ -14,7 +14,12 @@ body {
   position: relative;
   font-size: 1.2rem;
   justify-content: center;
-
+  display: flex;
+  .app {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+  }
   header {
     h1 {
       text-align: center;
@@ -60,6 +65,8 @@ body {
         padding: 20px;
         border-radius: 10px;
         gap: 10px;
+        max-width: 420px;
+
         .route-img {
           border-radius: 10px;
           margin-bottom: 10px;
@@ -95,6 +102,14 @@ body {
           display: flex;
           gap: 10px;
           color: #979eaa;
+          p {
+            margin-bottom: 0;
+          }
+          .delete-route {
+            color: #d51f0b;
+            cursor: pointer;
+            font-size: 25px;
+          }
         }
         .distance {
           display: flex;

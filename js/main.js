@@ -17,6 +17,8 @@ let map;
 let marker;
 let routes = JSON.parse(localStorage.getItem("travels")) || [];
 
+//JSON.parse(localStorage.getItem("travels")) ||
+
 //Functions
 function resetMapView(lat, lng) {
   setTimeout(() => {
@@ -51,8 +53,6 @@ function loadMap(position) {
       .setLatLng(e.latlng)
       .setContent("ride point selected")
       .openOn(map);
-
-    console.log(lat, "---", lng);
   });
 }
 
@@ -64,21 +64,19 @@ function renderRoutes(routes) {
     return;
   }
 
+  const key = process.env.KEY;
   routes.forEach(async (route) => {
+    const location = await getPlace(route.coords.lat, route.coords.lng);
+
     let html = ``;
-
-    const key = process.env.KEY;
-
     const img = `https://maps.googleapis.com/maps/api/staticmap
 ?center=${route.lat},${route.lng}
 &zoom=17
 &size=600x400
 &markers=color:red|${route.coords.lat},${route.coords.lng}
 &key=${key}`;
-
-    const distance = "20";
     html += `
-  <div class="card-route-info">
+  <div class="card-route-info" data-route-id="${route.id}">
     <img
       src="${img}"
       alt=""
@@ -91,21 +89,31 @@ function renderRoutes(routes) {
     <div class="date">
       <i class="bi bi-calendar"></i>
       <p>${new Date(route.date).toDateString()}, ${route.time}</p>
+       <i class="bi bi-trash ms-auto delete-route"></i>
     </div>
     <div class="distance">
-      <i class="bi bi-signpost"></i>
-      <p>${distance}km</p>
+      <i class="bi bi-globe-americas"></i>
+      <p>${location.locality}, ${location.countryName}</p>
     </div>
     <a href="https://www.google.com/maps?q=${route.coords.lat},${
       route.coords.lng
-    }" class="btn btn-primary open-map" target="_blank>
+    }" class="btn btn-primary open-map" target="_blank">
     
-    <i class="bi bi-map-fill"></i> open in maps
+    <i class="bi bi-map-fill"> open in maps</i> 
   
     </a>
 </div>`;
     routeContainer.insertAdjacentHTML("afterbegin", html);
   });
+}
+
+async function getPlace(lat, lng) {
+  const req = await fetch(
+    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=es`
+  );
+  const data = await req.json();
+
+  return data;
 }
 
 function init() {
@@ -134,6 +142,8 @@ document.addEventListener("click", function (e) {
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
+
+  const inputs = document.querySelectorAll("input");
   const routeArr = [...new FormData(this)];
   const data = Object.fromEntries(routeArr);
 
@@ -155,11 +165,11 @@ form.addEventListener("submit", function (e) {
   ) {
     Swal.fire({
       icon: "error",
-      title: "Formulario incompleto",
-      text: "Debes completar todos los campos y seleccionar una ubicacion de ruta",
+      title: "Missing data",
+      text: "You must complete all the fields and select a destination point on the map",
       confirmButtonColor: "#0b5ed7",
     });
-    console.log(rideData);
+
     return;
   }
 
@@ -168,13 +178,50 @@ form.addEventListener("submit", function (e) {
   localStorage.setItem("travels", JSON.stringify(routes));
   Swal.fire({
     icon: "success",
-    title: "ruta agendada",
+    title: "Ride booked",
     confirmButtonColor: "green",
   });
+
+  this.querySelectorAll("input").forEach((input) => (input.value = ""));
+  this.querySelector("textarea").value = "";
   openCloseModal();
 
   renderRoutes(routes);
   console.log(routes);
+});
+
+routeContainer.addEventListener("click", function (e) {
+  if (!e.target.classList.contains("delete-route")) return;
+  const route = e.target.closest(".card-route-info");
+
+  const idDelete = Number(route.dataset.routeId);
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your ride has been deleted.",
+        icon: "success",
+        confirmButtonColor: "#0b5ed7",
+      });
+
+      const newRoutes = routes.filter((route) => route.id !== idDelete);
+
+      routes = newRoutes;
+      localStorage.setItem("travels", JSON.stringify(routes));
+      renderRoutes(routes);
+    }
+  });
+
+  // routes = routes.filter((route) => route.id !== idDelete);
 });
 
 init();
@@ -182,6 +229,8 @@ init();
 function clearStorage() {
   localStorage.clear();
 }
+
+// getPlace(-33.726122, -70.32036);
 
 // clearStorage();
 

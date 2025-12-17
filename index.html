@@ -17,16 +17,17 @@
     <title>Administrador de rutas</title>
   </head>
   <body>
-    <header>
-      <h1>My routes</h1>
-      <ul class="rides-navigation">
-        <li class="active"><a href="#">Upcoming routes</a></li>
-        <!-- <li><a href="#">Past routes</a></li> -->
-      </ul>
-    </header>
-    <section class="main-section">
-      <div class="routes-container">
-        <div class="card-route-info">
+    <div class="app">
+      <header>
+        <h1>My routes</h1>
+        <ul class="rides-navigation">
+          <li class="active"><a href="#">Upcoming routes</a></li>
+          <!-- <li><a href="#">Past routes</a></li> -->
+        </ul>
+      </header>
+      <section class="main-section">
+        <div class="routes-container">
+          <!-- <div class="card-route-info" data-route-id="1234">
           <img
             src="https://www.tipicochileno.cl/wp-content/uploads/2014/10/Caleta-tortel-L.png"
             alt=""
@@ -39,6 +40,8 @@
           <div class="date">
             <i class="bi bi-calendar"></i>
             <p>Sat Oct 26, 9:00AM</p>
+
+            <i class="bi bi-trash ms-auto delete-route"></i>
           </div>
           <div class="distance">
             <i class="bi bi-signpost"></i>
@@ -48,7 +51,7 @@
             <i class="bi bi-map-fill"></i> open in maps
           </button>
         </div>
-        <div class="card-route-info">
+        <div class="card-route-info" data-route-id="5678">
           <img
             src="https://www.tipicochileno.cl/wp-content/uploads/2014/10/Caleta-tortel-L.png"
             alt=""
@@ -61,173 +64,76 @@
           <div class="date">
             <i class="bi bi-calendar"></i>
             <p>Sat Oct 26, 9:00AM</p>
+            <i class="bi bi-trash ms-auto delete-route"></i>
           </div>
           <div class="distance">
             <i class="bi bi-signpost"></i>
             <p>120km</p>
           </div>
-          <button class="btn btn-primary open-map">
-            <i class="bi bi-map-fill"></i> open in maps
-          </button>
+          <a
+            href="https://www.google.com/maps?q=${route.coords.lat},${
+      route.coords.lng
+    }"
+            class="btn btn-primary open-map"
+            target="_blank"
+          >
+            <i class="bi bi-map-fill"> open in maps</i>
+          </a>
+        </div> -->
         </div>
-      </div>
-      <div class="add-route">
-        <img src="img/square_16597161.png" alt="" class="add-route__btn" />
-      </div>
-    </section>
-    <div class="overlay hidden"></div>
-    <div class="add-route-window hidden">
-      <i class="bi bi-x close-btn" id="closeModal"></i>
-      <form class="upload">
-        <label for="ride-name" class="form-label">Ride name</label>
-        <input
-          type="text"
-          name="rideName"
-          id="ride-name"
-          class="form-control"
-          placeholder=""
-        />
-        <div class="date-time">
-          <div>
-            <label for="date" class="form-label">Date</label>
-            <input
-              type="date"
-              name="date"
-              id="date"
-              class="form-control"
-              placeholder=""
-            />
-          </div>
-          <div>
-            <label for="time" class="form-label">hour</label>
-            <input
-              type="time"
-              name="time"
-              id="time"
-              class="form-control"
-              placeholder=""
-            />
-          </div>
+        <div class="add-route">
+          <img src="img/square_16597161.png" alt="" class="add-route__btn" />
         </div>
-        <label for="description" class="form-label">Description</label>
-
-        <textarea
-          name="description"
-          id="description"
-          class="form-control"
-          placeholder="descripition"
-        ></textarea>
-
-        <div class="map" id="map"></div>
-        <button type="submit" class="btn btn-primary createRideBtn">
-          Create your Ride
-        </button>
-      </form>
-    </div>
-  </body>
-</html>
-
-<!-- <h1>Herramenta de listado de rutas de motociclistas</h1>
-    <p class="texto-inicio">
-      Rellena los campos que se encuentran debajo para comenzar a ordenar y
-      llevar registro de tus salidas en moto con tu grupo
-    </p>
-    <section class="contenedor-principal">
-      <div class="formulario-ruta">
-        <form action="" method="post">
+      </section>
+      <div class="overlay hidden"></div>
+      <div class="add-route-window hidden">
+        <i class="bi bi-x close-btn" id="closeModal"></i>
+        <form class="upload">
+          <label for="ride-name" class="form-label">Ride name</label>
           <input
             type="text"
-            name="nombre-ruta"
-            id="nombre-ruta"
-            placeholder="Nombre de la ruta"
+            name="rideName"
+            id="ride-name"
             class="form-control"
-          /><input
-            type="text"
-            name="destino-ruta"
-            id="destino-ruta"
-            placeholder="Destino de la ruta"
-            class="form-control"
+            placeholder=""
           />
+          <div class="date-time">
+            <div>
+              <label for="date" class="form-label">Date</label>
+              <input
+                type="date"
+                name="date"
+                id="date"
+                class="form-control"
+                placeholder=""
+              />
+            </div>
+            <div>
+              <label for="time" class="form-label">hour</label>
+              <input
+                type="time"
+                name="time"
+                id="time"
+                class="form-control"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <label for="description" class="form-label">Description</label>
+
           <textarea
-            name="descripicion"
-            id="descripcion-ruta"
-            cols="30"
-            rows="10"
-            placeholder="Descripicion de la ruta"
+            name="description"
+            id="description"
             class="form-control"
+            placeholder="descripition"
           ></textarea>
 
-          <button
-            type="submit"
-            class="guardar-ruta btn btn-primary"
-            id="guardar"
-          >
-            Guardar Ruta
-          </button>
-          <button class="btn btn-danger borrar-todo">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="borrar"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-            >
-              <g
-                fill="none"
-                stroke="#fff"
-                data-ruteId="${ruta.id}"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              >
-                <path
-                  stroke-dasharray="24"
-                  stroke-dashoffset="24"
-                  d="M12 20h5c0.5 0 1 -0.5 1 -1v-14M12 20h-5c-0.5 0 -1 -0.5 -1 -1v-14"
-                >
-                  <animate
-                    fill="freeze"
-                    attributeName="stroke-dashoffset"
-                    dur="0.4s"
-                    values="24;0"
-                  />
-                </path>
-                <path stroke-dasharray="20" stroke-dashoffset="20" d="M4 5h16">
-                  <animate
-                    fill="freeze"
-                    attributeName="stroke-dashoffset"
-                    begin="0.4s"
-                    dur="0.2s"
-                    values="20;0"
-                  />
-                </path>
-                <path
-                  stroke-dasharray="8"
-                  stroke-dashoffset="8"
-                  d="M10 4h4M10 9v7M14 9v7"
-                >
-                  <animate
-                    fill="freeze"
-                    attributeName="stroke-dashoffset"
-                    begin="0.6s"
-                    dur="0.2s"
-                    values="8;0"
-                  />
-                </path>
-              </g>
-            </svg>
-            Borrar Todo
+          <div class="map" id="map"></div>
+          <button type="submit" class="btn btn-primary createRideBtn">
+            Create your Ride
           </button>
         </form>
       </div>
-      <div class="lista-rutas">
-        <h3>Rutas Agendadas</h3>
-        <ul class="lista-rutas list-group">
-          <li class="list-group-item">
-            <h4 style="color: lightgray">
-              Aqui apareceran tus rutas cuando las agendes
-            </h4>
-          </li>
-        </ul>
-      </div>
-    </section> -->
+    </div>
+  </body>
+</html>

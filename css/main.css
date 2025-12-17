@@ -11873,6 +11873,12 @@ body {
   position: relative;
   font-size: 1.2rem;
   justify-content: center;
+  display: flex;
+}
+body .app {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
 }
 body header h1, body header .h1 {
   text-align: center;
@@ -11919,6 +11925,7 @@ body .main-section .routes-container .card-route-info {
   padding: 20px;
   border-radius: 10px;
   gap: 10px;
+  max-width: 420px;
 }
 body .main-section .routes-container .card-route-info .route-img {
   border-radius: 10px;
@@ -11955,6 +11962,14 @@ body .main-section .routes-container .card-route-info .date {
   display: flex;
   gap: 10px;
   color: #979eaa;
+}
+body .main-section .routes-container .card-route-info .date p {
+  margin-bottom: 0;
+}
+body .main-section .routes-container .card-route-info .date .delete-route {
+  color: #d51f0b;
+  cursor: pointer;
+  font-size: 25px;
 }
 body .main-section .routes-container .card-route-info .distance {
   display: flex;
