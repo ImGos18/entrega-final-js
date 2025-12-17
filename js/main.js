@@ -118,7 +118,11 @@ async function getPlace(lat, lng) {
 
 function init() {
   navigator.geolocation.getCurrentPosition(loadMap, () =>
-    alert("no se pudo obtener la posicion")
+    Swal.fire({
+      icon: "error",
+      title: "We could'nt get your location",
+      text: "give the app permission to your location in order to continue",
+    })
   );
 
   renderRoutes(routes);
